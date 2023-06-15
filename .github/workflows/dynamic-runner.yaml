@@ -4,11 +4,11 @@ jobs:
   choose-runner:
     runs-on: ubuntu-latest
     outputs:
-      runner: ${{ steps.choice.outputs.runner }}
+      runner: ${{ steps.choice.outputs.RUNNER }}
     steps:
       - uses: actions/checkout@v3
       - id: choice
-        run: echo "::set-output name=runner::$(python3 example.py runner)"
+        run: echo "RUNNER=$(python3 example.py runner)" >> "$GITHUB_OUTPUT"
 
   use-runner:
     needs: [choose-runner]
