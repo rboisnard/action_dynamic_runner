@@ -1,0 +1,19 @@
+name: Dynamic runner example
+on: [push]
+jobs:
+  choose-runner:
+    runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ steps.choice.outputs.runner }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: choice
+        run: echo "::set-output name=runner::$(python3 example.py runner)"
+
+  use-runner:
+    needs: [choose-runner]
+    runs-on: ${{ needs.choose-runner.outputs.runner }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: info
+        run: python3 example.py info
